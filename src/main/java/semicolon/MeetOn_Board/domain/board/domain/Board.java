@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import semicolon.MeetOn_Board.domain.board.BaseTimeEntity;
 import semicolon.MeetOn_Board.domain.board.dto.BoardDto;
 
 import static semicolon.MeetOn_Board.domain.board.dto.BoardDto.*;
@@ -13,7 +14,7 @@ import static semicolon.MeetOn_Board.domain.board.dto.BoardDto.*;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Board {
+public class Board extends BaseTimeEntity {
 
     @Id @GeneratedValue
     private Long id;

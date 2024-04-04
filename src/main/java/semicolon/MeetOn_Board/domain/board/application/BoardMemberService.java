@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
+import semicolon.MeetOn_Board.domain.board.dto.BoardMemberDto;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -27,6 +30,20 @@ public class BoardMemberService {
                 .header(HttpHeaders.AUTHORIZATION, accessToken)
                 .retrieve()
                 .bodyToMono(Boolean.class)
+                .block();
+    }
+
+    public List<BoardMemberDto> getMemberInfo(String username, Long channelId, String accessToken) {
+        String uri = UriComponentsBuilder.fromUriString("http://localhost:8000/member/board/test")
+                .queryParam("username", username)
+                .queryParam("channelId", channelId)
+                .toUriString();
+        return webClient.get()
+                .uri(uri)
+                .header(HttpHeaders.AUTHORIZATION, accessToken)
+                .retrieve()
+                .bodyToFlux(BoardMemberDto.class)
+                .collectList()
                 .block();
     }
 }
