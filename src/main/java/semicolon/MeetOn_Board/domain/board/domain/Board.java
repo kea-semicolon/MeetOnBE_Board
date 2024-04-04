@@ -45,4 +45,10 @@ public class Board extends BaseTimeEntity {
                 .channelId(channelId)
                 .build();
     }
+
+    public void update(UpdateRequestDto updateRequestDto) {
+        this.title = updateRequestDto.getTitle();
+        this.content = updateRequestDto.getContent();
+        this.isNotice = updateRequestDto.isNotice();
+    }
 }

@@ -98,4 +98,11 @@ public class BoardService {
                 )).toList();
         return new PageImpl<>(result, pageable, boardPage.getTotalElements());
     }
+
+    @Transactional
+    public void updateBoard(Long boardId, UpdateRequestDto updateRequestDto) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+        board.update(updateRequestDto);
+    }
 }

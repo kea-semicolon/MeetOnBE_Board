@@ -34,7 +34,7 @@ public class BoardMemberService {
     }
 
     public List<BoardMemberDto> getMemberInfo(String username, Long channelId, String accessToken) {
-        String uri = UriComponentsBuilder.fromUriString("http://localhost:8000/member/board/test")
+        String uri = UriComponentsBuilder.fromUriString("http://localhost:8000/member/board/info")
                 .queryParam("username", username)
                 .queryParam("channelId", channelId)
                 .toUriString();

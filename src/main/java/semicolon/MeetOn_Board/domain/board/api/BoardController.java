@@ -1,6 +1,7 @@
 package semicolon.MeetOn_Board.domain.board.api;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -54,5 +55,12 @@ public class BoardController {
         SearchCondition searchCondition = SearchCondition.builder().title(title).username(username).build();
         Page<BoardResponseDto> boardList = boardService.getBoardList(searchCondition, pageable, request);
         return ResponseEntity.ok(boardList);
+    }
+
+    @PutMapping
+    public ResponseEntity<String> updateBoard(@RequestParam Long boardId,
+                                              @RequestBody UpdateRequestDto updateRequestDto) {
+        boardService.updateBoard(boardId, updateRequestDto);
+        return ResponseEntity.ok("Ok");
     }
 }
