@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.cglib.core.Local;
+import semicolon.MeetOn_Board.domain.board.domain.Board;
 
 import java.time.LocalDateTime;
 
@@ -66,9 +67,29 @@ public class BoardDto {
         private boolean isNotice;
         private String content;
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        private Local createdDate;
+        private LocalDateTime createdDate;
         //첨부파일은 보류
 
+        @Builder
+        public BoardDetailResponseDto(String username, Long userId, boolean isNotice,
+                                      String content, LocalDateTime createdDate) {
+            this.username = username;
+            this.userId = userId;
+            this.isNotice = isNotice;
+            this.content = content;
+            this.createdDate = createdDate;
+        }
+
+        public static BoardDetailResponseDto boardDetailResponseDto(BoardMemberDto boardMemberDto, Board board) {
+            return BoardDetailResponseDto
+                    .builder()
+                    .userId(boardMemberDto.getId())
+                    .username(boardMemberDto.getUsername())
+                    .isNotice(board.isNotice())
+                    .content(board.getContent())
+                    .createdDate(board.getCreatedAt())
+                    .build();
+        }
     }
 
     @Getter

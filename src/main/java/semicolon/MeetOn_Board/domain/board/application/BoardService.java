@@ -8,10 +8,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Mono;
 import semicolon.MeetOn_Board.domain.board.dao.BoardRepository;
 import semicolon.MeetOn_Board.domain.board.domain.Board;
-import semicolon.MeetOn_Board.domain.board.dto.BoardDto;
 import semicolon.MeetOn_Board.domain.board.dto.BoardMemberDto;
 import semicolon.MeetOn_Board.domain.board.dto.SearchCondition;
 import semicolon.MeetOn_Board.global.exception.BusinessLogicException;
@@ -74,7 +72,7 @@ public class BoardService {
         }
 
         //조건에 맞는 유저 이름, 아이디 가져오기
-        List<BoardMemberDto> memberDtoList = boardMemberService.getMemberInfo(searchCondition.getUsername(), channelId, accessToken);
+        List<BoardMemberDto> memberDtoList = boardMemberService.getMemberInfoList(searchCondition.getUsername(), channelId, accessToken);
 
         //BoardMemberDto 리스트에서 Id만 꺼내기
         List<Long> memberIdList = memberDtoList
@@ -99,10 +97,31 @@ public class BoardService {
         return new PageImpl<>(result, pageable, boardPage.getTotalElements());
     }
 
+    /**
+     * 게시글 상세
+     * @param boardId
+     * @return
+     */
+    public BoardDetailResponseDto getBoardInfo(Long boardId, HttpServletRequest request) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+        String accessToken = request.getHeader("Authorization");
+        Long memberId = board.getMemberId();
+        BoardMemberDto memberInfo = boardMemberService.getMemberInfo(memberId, accessToken);
+        return BoardDetailResponseDto.boardDetailResponseDto(memberInfo, board);
+    }
+
+    /**
+     * 게시글 수정
+     * @param boardId
+     * @param updateRequestDto
+     */
     @Transactional
     public void updateBoard(Long boardId, UpdateRequestDto updateRequestDto) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
         board.update(updateRequestDto);
     }
+
+
 }

@@ -1,6 +1,5 @@
 package semicolon.MeetOn_Board.domain.board.application;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
-import reactor.core.publisher.Mono;
 import semicolon.MeetOn_Board.domain.board.dto.BoardMemberDto;
 
 import java.util.List;
@@ -21,6 +19,12 @@ public class BoardMemberService {
 
     private final WebClient webClient;
 
+    /**
+     * 해당 게시글 작성 Member 존재 여부 파악
+     * @param memberId
+     * @param accessToken
+     * @return
+     */
     Boolean memberExists(Long memberId, String accessToken) {
         String uri = UriComponentsBuilder.fromUriString("http://localhost:8000/member/find")
                 .queryParam("memberId", memberId)
@@ -33,8 +37,16 @@ public class BoardMemberService {
                 .block();
     }
 
-    public List<BoardMemberDto> getMemberInfo(String username, Long channelId, String accessToken) {
-        String uri = UriComponentsBuilder.fromUriString("http://localhost:8000/member/board/info")
+    /**
+     * 유저 정보 가져오기
+     * 유저 이름 검색 조건 포함
+     * @param username
+     * @param channelId
+     * @param accessToken
+     * @return
+     */
+    public List<BoardMemberDto> getMemberInfoList(String username, Long channelId, String accessToken) {
+        String uri = UriComponentsBuilder.fromUriString("http://localhost:8000/member/board/infoList")
                 .queryParam("username", username)
                 .queryParam("channelId", channelId)
                 .toUriString();
@@ -45,5 +57,17 @@ public class BoardMemberService {
                 .bodyToFlux(BoardMemberDto.class)
                 .collectList()
                 .block();
+    }
+
+    public BoardMemberDto getMemberInfo(Long memberId, String accessToken) {
+        String uri = UriComponentsBuilder.fromUriString("http://localhost:8000/member/board/info")
+                .queryParam("memberId", memberId)
+                .toUriString();
+        return webClient.get()
+                .uri(uri)
+                .header(HttpHeaders.AUTHORIZATION, accessToken)
+                .retrieve()
+                .bodyToFlux(BoardMemberDto.class)
+                .blockFirst();
     }
 }

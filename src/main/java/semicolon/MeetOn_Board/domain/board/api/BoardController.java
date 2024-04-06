@@ -58,6 +58,17 @@ public class BoardController {
     }
 
     /**
+     * 게시글 상세 정보
+     * @param boardId
+     * @param request
+     * @return
+     */
+    @GetMapping("/info")
+    public ResponseEntity<BoardDetailResponseDto> getBoardInfo(@RequestParam Long boardId, HttpServletRequest request) {
+        return ResponseEntity.ok(boardService.getBoardInfo(boardId, request));
+    }
+
+    /**
      * 게시글 수정
      * title, content, isNotice, 첨부파일(일단보류)
      * @param boardId
