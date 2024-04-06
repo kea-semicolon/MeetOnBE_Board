@@ -16,6 +16,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.transaction.annotation.Transactional;
 import semicolon.MeetOn_Board.domain.board.dao.BoardRepository;
+import semicolon.MeetOn_Board.domain.board.domain.Board;
 import semicolon.MeetOn_Board.domain.board.dto.BoardDto;
 
 import static org.assertj.core.api.Assertions.*;
@@ -63,6 +64,17 @@ public class BoardServiceTest {
         when(boardMemberService.memberExists(1L, "Bearer test-token")).thenReturn(true);
         Long id = boardService.createBoard(createRequestDto, request);
         assertThat(id).isNotNull();
+    }
+
+
+    @Test
+    void 게시글_수정() {
+        Board board = Board.builder().content("tt").build();
+        Board save = boardRepository.save(board);
+        String bTitle = save.getTitle();
+        UpdateRequestDto updateRequestDto = new UpdateRequestDto("test", "test2", true);
+        boardService.updateBoard(save.getId(), updateRequestDto);
+        assertThat(bTitle).isNotEqualTo(board.getTitle());
     }
 
     private void createSetCookie(String name, String value) {

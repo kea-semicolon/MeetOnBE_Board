@@ -57,6 +57,13 @@ public class BoardController {
         return ResponseEntity.ok(boardList);
     }
 
+    /**
+     * 게시글 수정
+     * title, content, isNotice, 첨부파일(일단보류)
+     * @param boardId
+     * @param updateRequestDto
+     * @return
+     */
     @PutMapping
     public ResponseEntity<String> updateBoard(@RequestParam Long boardId,
                                               @RequestBody UpdateRequestDto updateRequestDto) {
