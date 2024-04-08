@@ -81,4 +81,13 @@ public class BoardController {
         boardService.updateBoard(boardId, updateRequestDto);
         return ResponseEntity.ok("Ok");
     }
+
+    /**
+     * 게시글 삭제
+     */
+    @DeleteMapping
+    public ResponseEntity<String> deleteBoard(@RequestParam Long boardId) {
+        boardService.deleteBoard(boardId);
+        return ResponseEntity.ok("success");
+    }
 }

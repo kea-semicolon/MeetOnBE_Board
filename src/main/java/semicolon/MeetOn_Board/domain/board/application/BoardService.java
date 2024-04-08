@@ -6,12 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import semicolon.MeetOn_Board.domain.board.dao.BoardRepository;
 import semicolon.MeetOn_Board.domain.board.domain.Board;
 import semicolon.MeetOn_Board.domain.board.dto.BoardMemberDto;
 import semicolon.MeetOn_Board.domain.board.dto.SearchCondition;
+import semicolon.MeetOn_Board.domain.file.application.FileService;
 import semicolon.MeetOn_Board.global.exception.BusinessLogicException;
 import semicolon.MeetOn_Board.global.exception.code.ExceptionCode;
 import semicolon.MeetOn_Board.global.util.CookieUtil;
@@ -29,9 +32,11 @@ import static semicolon.MeetOn_Board.domain.board.dto.BoardDto.*;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final FileService fileService;
     private final CookieUtil cookieUtil;
     private final BoardChannelService boardChannelService;
     private final BoardMemberService boardMemberService;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     /**
      * 게시글 생성 전 memberId, channelId 유효한지 확인
@@ -124,4 +129,17 @@ public class BoardService {
     }
 
 
+    /**
+     * 게시글 삭제 + 딸린 댓글 삭제
+     * @param boardId
+     */
+    @Transactional
+    public void deleteBoard(Long boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+        fileService.deleteFile(boardId);
+
+        boardRepository.delete(board);
+        kafkaTemplate.send("board-deleted-topic", boardId.toString());
+    }
 }

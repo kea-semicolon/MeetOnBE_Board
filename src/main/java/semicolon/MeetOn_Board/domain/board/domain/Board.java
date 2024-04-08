@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import semicolon.MeetOn_Board.domain.board.BaseTimeEntity;
-import semicolon.MeetOn_Board.domain.board.dto.BoardDto;
+import semicolon.MeetOn_Board.domain.file.domain.File;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class Board extends BaseTimeEntity {
     private Long memberId;
     private Long channelId;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<File> fileList = new ArrayList<>();
 
     @Builder

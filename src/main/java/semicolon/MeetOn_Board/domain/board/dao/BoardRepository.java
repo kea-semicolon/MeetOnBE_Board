@@ -15,4 +15,7 @@ import static semicolon.MeetOn_Board.domain.board.dto.BoardDto.*;
 public interface BoardRepository extends JpaRepository<Board, Long>, BoardQueryDslRepository {
 
 //    Page<Board> findByChannelId(Long channelId, Pageable pageable);
+    void deleteAllByMemberId(Long memberId);
+
+    List<Board> findAllByMemberId(Long memberId);
 }

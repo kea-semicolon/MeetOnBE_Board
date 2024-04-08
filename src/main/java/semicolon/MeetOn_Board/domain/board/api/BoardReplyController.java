@@ -14,7 +14,7 @@ import semicolon.MeetOn_Board.domain.board.application.BoardReplyService;
 @RequiredArgsConstructor
 public class BoardReplyController {
 
-    private BoardReplyService boardReplyService;
+    private final BoardReplyService boardReplyService;
 
     @GetMapping("/exist")
     public Boolean existBoard(@RequestParam Long boardId) {
