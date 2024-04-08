@@ -39,6 +39,7 @@ public class BoardKafkaService {
         for (Board board : boardList) {
             kafkaTemplate.send(BOARD_DELETED_TOPIC, board.getId().toString());
         }
-        boardRepository.deleteAllByMemberId(memberId);
+        int c = boardRepository.deleteBoardsByMemberId(memberId);
+        log.info("Board {}개 삭제 완료", c);
     }
 }
