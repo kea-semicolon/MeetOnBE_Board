@@ -1,5 +1,6 @@
 package semicolon.MeetOn_Board.domain.board.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class BoardController {
      * @param request
      * @return
      */
+    @Operation(description = "게시글 생성")
     @PostMapping
     public ResponseEntity<String> createBoard(@RequestBody CreateRequestDto createRequestDto,
                                               HttpServletRequest request) {
@@ -47,6 +49,7 @@ public class BoardController {
      * @param request
      * @return
      */
+    @Operation(description = "게시글 리스트(페이징0)")
     @GetMapping
     public ResponseEntity<Page<BoardResponseDto>> getBoardList(@RequestParam(required = false) String title,
                                                                @RequestParam(required = false) String username,
@@ -63,6 +66,7 @@ public class BoardController {
      * @param request
      * @return
      */
+    @Operation(description = "게시글 상세 정보")
     @GetMapping("/info")
     public ResponseEntity<BoardDetailResponseDto> getBoardInfo(@RequestParam Long boardId, HttpServletRequest request) {
         return ResponseEntity.ok(boardService.getBoardInfo(boardId, request));
@@ -75,6 +79,7 @@ public class BoardController {
      * @param updateRequestDto
      * @return
      */
+    @Operation(description = "게시글 수정")
     @PutMapping
     public ResponseEntity<String> updateBoard(@RequestParam Long boardId,
                                               @RequestBody UpdateRequestDto updateRequestDto) {
@@ -85,6 +90,7 @@ public class BoardController {
     /**
      * 게시글 삭제
      */
+    @Operation(description = "게시글 삭제")
     @DeleteMapping
     public ResponseEntity<String> deleteBoard(@RequestParam Long boardId) {
         boardService.deleteBoard(boardId);

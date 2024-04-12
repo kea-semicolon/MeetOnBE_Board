@@ -1,5 +1,6 @@
 package semicolon.MeetOn_Board.domain.board.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ public class BoardReplyController {
 
     private final BoardReplyService boardReplyService;
 
+    @Operation(description = "Board-Reply 내부 API, Board 존재 유무 확인")
     @GetMapping("/exist")
     public Boolean existBoard(@RequestParam Long boardId) {
         return boardReplyService.findBoard(boardId);
