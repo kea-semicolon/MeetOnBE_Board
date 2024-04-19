@@ -32,7 +32,7 @@ public class BoardController {
      * @param request
      * @return
      */
-    @Operation(summary = "게시글 생성", description = "게시글 생성 + CreateRequestDto")
+    @Operation(summary = "게시글 생성 ", description = "게시글 생성 + CreateRequestDto")
     @PostMapping
     public ResponseEntity<String> createBoard(@RequestBody CreateRequestDto createRequestDto,
                                               HttpServletRequest request) {
