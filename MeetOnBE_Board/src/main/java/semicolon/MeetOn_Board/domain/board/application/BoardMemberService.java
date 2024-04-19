@@ -26,7 +26,7 @@ public class BoardMemberService {
      * @return
      */
     Boolean memberExists(Long memberId, String accessToken) {
-        String uri = UriComponentsBuilder.fromUriString("http://172.16.212.76:8000/member/find")
+        String uri = UriComponentsBuilder.fromUriString("http://localhost:8000/member/find")
                 .queryParam("memberId", memberId)
                 .toUriString();
         return webClient.get()
@@ -46,7 +46,7 @@ public class BoardMemberService {
      * @return
      */
     public List<BoardMemberDto> getMemberInfoList(String username, Long channelId, String accessToken) {
-        String uri = UriComponentsBuilder.fromUriString("http://172.16.212.76:8000/member/board/infoList")
+        String uri = UriComponentsBuilder.fromUriString("http://localhost:8000/member/board/infoList")
                 .queryParam("username", username)
                 .queryParam("channelId", channelId)
                 .toUriString();
@@ -60,7 +60,7 @@ public class BoardMemberService {
     }
 
     public BoardMemberDto getMemberInfo(Long memberId, String accessToken) {
-        String uri = UriComponentsBuilder.fromUriString("http://172.16.212.76:8000/member/board/info")
+        String uri = UriComponentsBuilder.fromUriString("http://localhost:8000/member/board/info")
                 .queryParam("memberId", memberId)
                 .toUriString();
         return webClient.get()

@@ -18,7 +18,7 @@ public class BoardChannelService {
     private final WebClient webClient;
 
     Boolean channelExists(Long channelId, String accessToken) {
-        String uri = UriComponentsBuilder.fromUriString("http://172.16.212.76:8000/channel/find")
+        String uri = UriComponentsBuilder.fromUriString("http://localhost:8000/channel/find")
                         .queryParam("channelId", channelId).toUriString();
 
         return webClient.get()
