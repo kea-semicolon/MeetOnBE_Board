@@ -61,5 +61,5 @@ eureka:
       defaultZone: http://172.16.212.76:8761/eureka
 
   instance:
-    hostname: localhost
+    hostname: 172.16.212.76
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
