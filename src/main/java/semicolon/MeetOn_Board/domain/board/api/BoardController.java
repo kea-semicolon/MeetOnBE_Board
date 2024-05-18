@@ -1,5 +1,6 @@
 package semicolon.MeetOn_Board.domain.board.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
@@ -11,9 +12,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import semicolon.MeetOn_Board.domain.board.application.BoardService;
 import semicolon.MeetOn_Board.domain.board.dto.SearchCondition;
 
+import java.io.IOException;
 import java.util.List;
 
 import static semicolon.MeetOn_Board.domain.board.dto.BoardDto.*;
@@ -25,20 +28,39 @@ import static semicolon.MeetOn_Board.domain.board.dto.BoardDto.*;
 public class BoardController {
 
     private final BoardService boardService;
+    private final ObjectMapper objectMapper;
 
     /**
-     * 게시글 생성
-     * @param createRequestDto
+     * 게시륵 생성
+     * @param createRequestDtoString
+     * @param files
      * @param request
      * @return
+     * @throws IOException
      */
     @Operation(summary = "게시글 생성", description = "게시글 생성 + CreateRequestDto")
     @PostMapping
-    public ResponseEntity<String> createBoard(@RequestBody CreateRequestDto createRequestDto,
-                                              HttpServletRequest request) {
-        Long board = boardService.createBoard(createRequestDto, request);
+    public ResponseEntity<String> createBoard(@RequestPart String createRequestDtoString,
+                                              @RequestPart(required = false) List<MultipartFile> files,
+                                              HttpServletRequest request) throws IOException {
+        CreateRequestDto createRequestDto = objectMapper.readValue(createRequestDtoString, CreateRequestDto.class);
+        Long board = boardService.createBoard(createRequestDto, files, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(board + " Created");
     }
+
+//    /**
+//     * 게시글 생성
+//     * @param createRequestDto
+//     * @param request
+//     * @return
+//     */
+//    @Operation(summary = "게시글 생성", description = "게시글 생성 + CreateRequestDto")
+//    @PostMapping
+//    public ResponseEntity<String> createBoard(@RequestBody CreateRequestDto createRequestDto,
+//                                              HttpServletRequest request) {
+//        Long board = boardService.createBoard(createRequestDto, request);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(board + " Created");
+//    }
 
     /**
      * 게시글 리스트 받아오기

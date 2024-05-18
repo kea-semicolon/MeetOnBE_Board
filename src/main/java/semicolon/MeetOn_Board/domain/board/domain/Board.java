@@ -56,4 +56,8 @@ public class Board extends BaseTimeEntity {
         this.content = updateRequestDto.getContent();
         this.isNotice = updateRequestDto.isNotice();
     }
+
+    public void uploadFile(List<File> fileList) {
+        this.fileList = fileList;
+    }
 }

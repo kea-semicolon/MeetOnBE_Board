@@ -14,6 +14,10 @@ spring:
     username: root
     password: '1918'
 
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 
   data:
     web:
@@ -38,6 +42,19 @@ spring:
 
   profiles:
     include: oauth
+
+cloud:
+  aws:
+    s3:
+      bucket: bbang-test-bucket
+    credentials:
+      access-key: AKIA6ODU3C5N5QPBV7GI
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
 
 jwt:
   secret: /vUwAz/Vx78zX5/E4v6kjfbyoTRpYtOK2WT9rYcXeNPzDMuv1BlehYL113paVVYvUTyUIYg3kSZglWjEAJxgMw==

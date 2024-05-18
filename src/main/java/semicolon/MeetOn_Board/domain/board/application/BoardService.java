@@ -10,15 +10,19 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import semicolon.MeetOn_Board.domain.board.dao.BoardRepository;
 import semicolon.MeetOn_Board.domain.board.domain.Board;
 import semicolon.MeetOn_Board.domain.board.dto.BoardMemberDto;
 import semicolon.MeetOn_Board.domain.board.dto.SearchCondition;
 import semicolon.MeetOn_Board.domain.file.application.FileService;
+import semicolon.MeetOn_Board.domain.file.domain.File;
 import semicolon.MeetOn_Board.global.exception.BusinessLogicException;
 import semicolon.MeetOn_Board.global.exception.code.ExceptionCode;
 import semicolon.MeetOn_Board.global.util.CookieUtil;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,6 +41,7 @@ public class BoardService {
     private final BoardChannelService boardChannelService;
     private final BoardMemberService boardMemberService;
     private final KafkaTemplate<String, String> kafkaTemplate;
+    private final BoardS3UploadService uploadService;
 
     /**
      * 게시글 생성 전 memberId, channelId 유효한지 확인
@@ -44,10 +49,9 @@ public class BoardService {
      * @param request
      */
     @Transactional
-    public Long createBoard(CreateRequestDto createRequestDto, HttpServletRequest request) {
+    public Long createBoard(CreateRequestDto createRequestDto, List<MultipartFile> files, HttpServletRequest request) throws IOException {
         Long memberId = Long.valueOf(cookieUtil.getCookieValue("memberId", request));
         Long channelId = Long.valueOf(cookieUtil.getCookieValue("channelId", request));
-        log.info("memberId={}, channelId={}", memberId, channelId);
         String accessToken = request.getHeader("Authorization");
         if (!boardMemberService.memberExists(memberId, accessToken)) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
@@ -55,9 +59,19 @@ public class BoardService {
         if (!boardChannelService.channelExists(channelId, accessToken)) {
             throw new BusinessLogicException(ExceptionCode.CHANNEL_NOT_FOUND);
         }
-
         Board board = Board.toBoard(createRequestDto, memberId, channelId);
-        return boardRepository.save(board).getId();
+        Long id = boardRepository.save(board).getId();
+        List<String> fileUrls = new ArrayList<>();
+        if(files != null) {
+            fileUrls = uploadService.saveFiles(files, id);
+        }
+        List<File> fileList = new ArrayList<>();
+        for(int i=0;i<fileUrls.size();i++){
+            File file = File.toFile(board, fileUrls.get(i), i);
+            fileList.add(file);
+        }
+        board.uploadFile(fileList);
+        return id;
     }
 
     /**

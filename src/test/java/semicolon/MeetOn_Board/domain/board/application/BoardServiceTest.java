@@ -19,6 +19,8 @@ import semicolon.MeetOn_Board.domain.board.dao.BoardRepository;
 import semicolon.MeetOn_Board.domain.board.domain.Board;
 import semicolon.MeetOn_Board.domain.board.dto.BoardDto;
 
+import java.io.IOException;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static semicolon.MeetOn_Board.domain.board.dto.BoardDto.*;
@@ -54,7 +56,7 @@ public class BoardServiceTest {
     }
 
     @Test
-    void 게시글_생성() {
+    void 게시글_생성() throws IOException {
         CreateRequestDto createRequestDto = CreateRequestDto.builder()
                 .content("testContent")
                 .title("testTitle")
@@ -62,7 +64,7 @@ public class BoardServiceTest {
                 .build();
         when(boardChannelService.channelExists(6552L, "Bearer test-token")).thenReturn(true);
         when(boardMemberService.memberExists(1L, "Bearer test-token")).thenReturn(true);
-        Long id = boardService.createBoard(createRequestDto, request);
+        Long id = boardService.createBoard(createRequestDto, null, request);
         assertThat(id).isNotNull();
     }
 
