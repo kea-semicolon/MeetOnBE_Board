@@ -29,7 +29,7 @@ public class BoardS3Service {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(multipartFile.getSize());
         metadata.setContentType(multipartFile.getContentType());
-        String saveName = "Board " + boardId + "-file" + i + "." + type;
+        String saveName = "Board" + boardId + "file" + i + "." + type;
         amazonS3.putObject(bucket, saveName, multipartFile.getInputStream(), metadata);
         return amazonS3.getUrl(bucket, saveName).toString();
     }
