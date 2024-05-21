@@ -48,6 +48,24 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.CREATED).body(board + " Created");
     }
 
+    /**
+     * 게시글 수정
+     * @param boardId
+     * @param files
+     * @param updateRequestDtoString
+     * @return
+     * @throws IOException
+     */
+    @Operation(summary = "게시글 수정", description = "게시글 수정 + UpdateRequestDto")
+    @PutMapping("/{boardId}")
+    public ResponseEntity<String> updateBoard(@PathVariable Long boardId,
+                                              @RequestPart(required = false) List<MultipartFile> files,
+                                              @RequestPart String updateRequestDtoString) throws IOException {
+        UpdateRequestDto updateRequestDto = objectMapper.readValue(updateRequestDtoString, UpdateRequestDto.class);
+        boardService.updateBoard(boardId, updateRequestDto, files);
+        return ResponseEntity.ok("Ok");
+    }
+
 //    /**
 //     * 게시글 생성
 //     * @param createRequestDto
@@ -94,20 +112,20 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getBoardInfo(boardId, request));
     }
 
-    /**
-     * 게시글 수정
-     * title, content, isNotice, 첨부파일(일단보류)
-     * @param boardId
-     * @param updateRequestDto
-     * @return
-     */
-    @Operation(summary = "게시글 수정", description = "게시글 수정 + UpdateRequestDto")
-    @PutMapping
-    public ResponseEntity<String> updateBoard(@RequestParam Long boardId,
-                                              @RequestBody UpdateRequestDto updateRequestDto) {
-        boardService.updateBoard(boardId, updateRequestDto);
-        return ResponseEntity.ok("Ok");
-    }
+//    /**
+//     * 게시글 수정
+//     * title, content, isNotice, 첨부파일(일단보류)
+//     * @param boardId
+//     * @param updateRequestDto
+//     * @return
+//     */
+//    @Operation(summary = "게시글 수정", description = "게시글 수정 + UpdateRequestDto")
+//    @PutMapping
+//    public ResponseEntity<String> updateBoard(@RequestParam Long boardId,
+//                                              @RequestBody UpdateRequestDto updateRequestDto) {
+//        boardService.updateBoard(boardId, updateRequestDto);
+//        return ResponseEntity.ok("Ok");
+//    }
 
     /**
      * 게시글 삭제

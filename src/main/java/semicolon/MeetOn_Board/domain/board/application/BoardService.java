@@ -74,6 +74,37 @@ public class BoardService {
     }
 
     /**
+     * 게시글 수정
+     * @param boardId
+     * @param updateRequestDto
+     */
+    @Transactional
+    public void updateBoard(Long boardId, UpdateRequestDto updateRequestDto, List<MultipartFile> files) throws IOException {
+        Board board = boardRepository.findAllInfoById(boardId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+
+        //기존 파일 삭제
+        List<File> legacyFile = board.getFileList();
+        List<Long> fileIdList = legacyFile.stream()
+                .map(File::getId)
+                .collect(Collectors.toList());
+        fileService.deleteFiles(fileIdList);
+        uploadService.deleteFiles(legacyFile);
+
+        //새 정보 업데이트
+        List<String> fileUrls = new ArrayList<>();
+        if(files != null){
+            fileUrls = uploadService.saveFiles(files, board.getId());
+        }
+        List<File> fileList = new ArrayList<>();
+        for(int i=0;i<fileUrls.size();i++){
+            File file = File.toFile(board, fileUrls.get(i), i);
+            fileList.add(file);
+        }
+        board.update(updateRequestDto, fileList);
+    }
+
+    /**
      * 게시글 리스트 출력
      * 검색 조건(x, 작성자 이름, 제목)
      * @param searchCondition
@@ -129,17 +160,17 @@ public class BoardService {
         return BoardDetailResponseDto.boardDetailResponseDto(memberInfo, board);
     }
 
-    /**
-     * 게시글 수정
-     * @param boardId
-     * @param updateRequestDto
-     */
-    @Transactional
-    public void updateBoard(Long boardId, UpdateRequestDto updateRequestDto) {
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
-        board.update(updateRequestDto);
-    }
+//    /**
+//     * 게시글 수정
+//     * @param boardId
+//     * @param updateRequestDto
+//     */
+//    @Transactional
+//    public void updateBoard(Long boardId, UpdateRequestDto updateRequestDto) {
+//        Board board = boardRepository.findById(boardId)
+//                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+//        board.update(updateRequestDto);
+//    }
 
 
     /**

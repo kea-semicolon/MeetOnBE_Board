@@ -32,4 +32,9 @@ public class FileService {
         }
         fileRepository.deleteAllByBoardId(boardId);
     }
+
+    @Transactional
+    public void deleteFiles(List<Long> fileIds) {
+        fileRepository.deleteAllById(fileIds);
+    }
 }
