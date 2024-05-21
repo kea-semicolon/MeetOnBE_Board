@@ -43,7 +43,7 @@ public class BoardController {
     public ResponseEntity<String> createBoard(@RequestPart String createRequestDtoString,
                                               @RequestPart(required = false) List<MultipartFile> files,
                                               HttpServletRequest request) throws IOException {
-        log.info("files = {}", files.size());
+        log.info("files = {}", files == null ? "null" : files.size());
         CreateRequestDto createRequestDto = objectMapper.readValue(createRequestDtoString, CreateRequestDto.class);
         Long board = boardService.createBoard(createRequestDto, files, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(board + " Created");
