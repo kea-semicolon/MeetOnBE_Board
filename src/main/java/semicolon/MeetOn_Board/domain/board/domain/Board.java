@@ -45,7 +45,7 @@ public class Board extends BaseTimeEntity {
                 .builder()
                 .title(createRequestDto.getTitle())
                 .content(createRequestDto.getContent())
-                .isNotice(createRequestDto.isNotice())
+                .isNotice(createRequestDto.getIsNotice())
                 .memberId(memberId)
                 .channelId(channelId)
                 .build();

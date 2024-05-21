@@ -52,6 +52,7 @@ public class BoardService {
         Long memberId = Long.valueOf(cookieUtil.getCookieValue("memberId", request));
         Long channelId = Long.valueOf(cookieUtil.getCookieValue("channelId", request));
         String accessToken = request.getHeader("Authorization");
+        log.info("isNotice={}", createRequestDto.getIsNotice());
         if (!boardMemberService.memberExists(memberId, accessToken)) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
         }
