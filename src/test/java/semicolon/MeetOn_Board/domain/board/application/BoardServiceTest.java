@@ -70,12 +70,12 @@ public class BoardServiceTest {
 
 
     @Test
-    void 게시글_수정() {
+    void 게시글_수정() throws IOException {
         Board board = Board.builder().content("tt").build();
         Board save = boardRepository.save(board);
         String bTitle = save.getTitle();
         UpdateRequestDto updateRequestDto = new UpdateRequestDto("test", "test2", true);
-        boardService.updateBoard(save.getId(), updateRequestDto);
+        boardService.updateBoard(save.getId(), updateRequestDto, null);
         assertThat(bTitle).isNotEqualTo(board.getTitle());
     }
 
