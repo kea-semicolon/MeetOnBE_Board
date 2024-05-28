@@ -22,7 +22,7 @@ public class Board extends BaseTimeEntity {
 
     private String title;
     private String content;
-    private boolean isNotice;
+    private Boolean isNotice;
     private Long memberId;
     private Long channelId;
 
@@ -30,7 +30,7 @@ public class Board extends BaseTimeEntity {
     private List<File> fileList = new ArrayList<>();
 
     @Builder
-    public Board(Long id, String title, String content, boolean isNotice, Long memberId, Long channelId, List<File> fileList) {
+    public Board(Long id, String title, String content, Boolean isNotice, Long memberId, Long channelId, List<File> fileList) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -54,7 +54,7 @@ public class Board extends BaseTimeEntity {
     public void update(UpdateRequestDto updateRequestDto, List<File> fileList) {
         this.title = updateRequestDto.getTitle();
         this.content = updateRequestDto.getContent();
-        this.isNotice = updateRequestDto.isNotice();
+        this.isNotice = updateRequestDto.getIsNotice();
         this.fileList = fileList;
     }
 

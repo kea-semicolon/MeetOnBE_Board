@@ -122,7 +122,8 @@ public class BoardService {
         }
 
         //조건에 맞는 유저 이름, 아이디 가져오기
-        List<BoardMemberDto> memberDtoList = boardMemberService.getMemberInfoList(searchCondition.getUsername(), channelId, accessToken);
+        List<BoardMemberDto> memberDtoList =
+                boardMemberService.getMemberInfoList(searchCondition.getUsername(), channelId, accessToken);
 
         //BoardMemberDto 리스트에서 Id만 꺼내기
         List<Long> memberIdList = memberDtoList
@@ -131,7 +132,8 @@ public class BoardService {
         Map<Long, String> memberDtoMap = memberDtoList
                 .stream().collect(Collectors.toMap(BoardMemberDto::getId, BoardMemberDto::getUsername));
 
-        Page<Board> boardPage = boardRepository.findByChannelId(searchCondition.getTitle(), memberIdList, channelId, pageable);
+        Page<Board> boardPage =
+                boardRepository.findByChannelId(searchCondition.getTitle(), memberIdList, channelId, pageable);
         List<Board> boardList = boardPage.getContent();
 
         //boardList에 유저 이름 붙여서 출력
@@ -139,7 +141,7 @@ public class BoardService {
                 .stream()
                 .map(board -> new BoardResponseDto(
                         board.getId(),
-                        board.isNotice(),
+                        board.getIsNotice(),
                         board.getTitle(),
                         memberDtoMap.get(board.getMemberId()),
                         board.getCreatedAt()

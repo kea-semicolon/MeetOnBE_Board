@@ -64,18 +64,20 @@ public class BoardDto {
     public static class BoardDetailResponseDto {
         private String username;
         private Long userId;
-        private boolean isNotice;
+        private Boolean isNotice;
+        private String title;
         private String content;
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime createdDate;
         //첨부파일은 보류
 
         @Builder
-        public BoardDetailResponseDto(String username, Long userId, boolean isNotice,
-                                      String content, LocalDateTime createdDate) {
+        public BoardDetailResponseDto(String username, Long userId, Boolean isNotice,
+                                      String title, String content, LocalDateTime createdDate) {
             this.username = username;
             this.userId = userId;
             this.isNotice = isNotice;
+            this.title = title;
             this.content = content;
             this.createdDate = createdDate;
         }
@@ -85,7 +87,8 @@ public class BoardDto {
                     .builder()
                     .userId(boardMemberDto.getId())
                     .username(boardMemberDto.getUsername())
-                    .isNotice(board.isNotice())
+                    .isNotice(board.getIsNotice())
+                    .title(board.getTitle())
                     .content(board.getContent())
                     .createdDate(board.getCreatedAt())
                     .build();
@@ -97,13 +100,14 @@ public class BoardDto {
     public static class UpdateRequestDto {
         private String title;
         private String content;
-        private boolean isNotice;
+        private Boolean isNotice;
         //첨부파일은 보류
         @Builder
-        public UpdateRequestDto(String title, String content, boolean isNotice) {
+        public UpdateRequestDto(String title, String content, Boolean isNotice) {
             this.title = title;
             this.content = content;
             this.isNotice = isNotice;
+
         }
     }
 }
