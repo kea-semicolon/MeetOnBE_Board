@@ -2,12 +2,13 @@
 FROM gradle:7.3.3-jdk17 AS build
 WORKDIR /app
 
-# Gradle 빌드에 필요한 소스와 build.gradle, settings.gradle을 복사
-COPY build.gradle settings.gradle ./
+# Gradle 빌드에 필요한 소스와 build.gradle, settings.gradle, Gradle Wrapper를 복사
+COPY build.gradle settings.gradle gradlew* ./
+COPY gradle ./gradle
 COPY src ./src
 
-# Gradle을 사용하여 애플리케이션을 빌드
-RUN gradle build -x test
+# Gradle Wrapper를 사용하여 애플리케이션을 빌드
+RUN ./gradlew build -x test
 
 # 2단계: 실행 단계
 FROM openjdk:17.0.2-slim
