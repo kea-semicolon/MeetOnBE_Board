@@ -67,7 +67,7 @@ public class BoardDto {
         private Boolean isNotice;
         private String title;
         private String content;
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime createdDate;
         //첨부파일은 보류
 
