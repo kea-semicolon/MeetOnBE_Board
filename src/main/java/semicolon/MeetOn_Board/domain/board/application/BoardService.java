@@ -160,7 +160,9 @@ public class BoardService {
         String accessToken = request.getHeader("Authorization");
         Long memberId = board.getMemberId();
         BoardMemberDto memberInfo = boardMemberService.getMemberInfo(memberId, accessToken);
-        return BoardDetailResponseDto.boardDetailResponseDto(memberInfo, board);
+        BoardDetailResponseDto boardDetailResponseDto = BoardDetailResponseDto.boardDetailResponseDto(memberInfo, board);
+        log.info("boardCreatedTime={}", boardDetailResponseDto.getCreatedDate());
+        return boardDetailResponseDto;
     }
 
 //    /**
