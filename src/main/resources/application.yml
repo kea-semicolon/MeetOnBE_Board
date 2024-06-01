@@ -4,15 +4,6 @@ server:
 spring:
   application:
     name: board
-  datasource:
-#    url: jdbc:h2:tcp://localhost/~/withsafe
-#    username: sa
-#    password: 1
-#    driver-class-name: org.h2.Driver
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://172.16.212.76/meeton?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
-    username: root
-    password: '1918'
 
   servlet:
     multipart:
