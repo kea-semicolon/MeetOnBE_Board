@@ -1,0 +1,31 @@
+app:
+  gateway:
+    url: ${게이트웨이 주소}
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB 주소}
+    username: ${db 사용자}
+    password: ${db 암호}
+
+  kafka:
+    consumer:
+      bootstrap-servers: ${카프카 주소}:9092
+    producer:
+      bootstrap-servers: ${카프카 주소}:9092
+
+openapi:
+  service:
+    url: ${게이트웨이 주소}
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: ${유레카 주소}/eureka
+
+  instance:
+    hostname: ${서버 주소}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
