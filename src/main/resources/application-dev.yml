@@ -19,13 +19,3 @@ openapi:
   service:
     url: http://172.16.212.76:8000
 
-eureka:
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://172.16.212.76:8761/eureka
-
-  instance:
-    hostname: 172.16.212.76
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
