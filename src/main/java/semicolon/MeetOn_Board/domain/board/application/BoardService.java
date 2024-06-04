@@ -86,11 +86,13 @@ public class BoardService {
 
         //기존 파일 삭제
         List<File> legacyFile = board.getFileList();
-        List<Long> fileIdList = legacyFile.stream()
-                .map(File::getId)
-                .collect(Collectors.toList());
-        fileService.deleteFiles(fileIdList);
-        uploadService.deleteFiles(legacyFile);
+        if(!legacyFile.isEmpty()){
+            List<Long> fileIdList = legacyFile.stream()
+                    .map(File::getId)
+                    .collect(Collectors.toList());
+            fileService.deleteFiles(fileIdList);
+            uploadService.deleteFiles(legacyFile);
+        }
 
         //새 정보 업데이트
         List<String> fileUrls = new ArrayList<>();
