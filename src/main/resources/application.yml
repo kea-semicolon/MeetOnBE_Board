@@ -27,18 +27,7 @@ spring:
   profiles:
     include: oauth
 
-cloud:
-  aws:
-    s3:
-      bucket: semicolon-bucket
-    credentials:
-      access-key: AKIA6JHGVMBA3CBCIUEK
-      secret-key: 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
-    region:
-      static: ap-northeast-2
-      auto: false
-    stack:
-      auto: false
+
 
 jwt:
   secret: /vUwAz/Vx78zX5/E4v6kjfbyoTRpYtOK2WT9rYcXeNPzDMuv1BlehYL113paVVYvUTyUIYg3kSZglWjEAJxgMw==
