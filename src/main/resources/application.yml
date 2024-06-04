@@ -30,10 +30,10 @@ spring:
 cloud:
   aws:
     s3:
-      bucket: bbang-test-bucket
+      bucket: semicolon-bucket
     credentials:
-      access-key: AKIA6ODU3C5N5QPBV7GI
-      secret-key: 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
+      access-key: AKIA6JHGVMBA3CBCIUEK
+      secret-key: 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
     region:
       static: ap-northeast-2
       auto: false
