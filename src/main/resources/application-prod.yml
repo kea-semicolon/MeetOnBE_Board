@@ -27,14 +27,3 @@ spring:
 openapi:
   service:
     url: ${게이트웨이 주소}
-#
-#eureka:
-#  client:
-#    fetch-registry: true
-#    register-with-eureka: true
-#    service-url:
-#      defaultZone: ${유레카 주소}/eureka
-#
-#  instance:
-#    hostname: ${서버 주소}
-#    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
