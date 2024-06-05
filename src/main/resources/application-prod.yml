@@ -27,3 +27,9 @@ spring:
 openapi:
   service:
     url: ${게이트웨이 주소}
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    enabled: false
