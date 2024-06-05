@@ -20,7 +20,7 @@ WORKDIR /app
 COPY --from=build /app/build/libs/MeetOn_Board-0.0.1-SNAPSHOT.jar /app/app.jar
 
 ## JVM 플래그 및 애플리케이션 실행
-CMD ["java", "-Dspring.profiles.active=prod", "-jar", "/app/app.jar"]
+CMD ["java", "-Dspring.profiles.active=dev", "-jar", "/app/app.jar"]
 # JVM 플래그 및 애플리케이션 실행
 #CMD ["java", "-jar", "/app/app.jar"]
 
