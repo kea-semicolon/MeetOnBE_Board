@@ -27,10 +27,21 @@ spring:
   profiles:
     include: oauth
 
-
+cloud:
+  aws:
+    s3:
+      bucket: ${SEMICOLON_BUCKET}
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
 
 jwt:
-  secret: /vUwAz/Vx78zX5/E4v6kjfbyoTRpYtOK2WT9rYcXeNPzDMuv1BlehYL113paVVYvUTyUIYg3kSZglWjEAJxgMw==
+  secret: ${JWT_SECRET_KEY}
 
 springdoc:
   api-docs:
