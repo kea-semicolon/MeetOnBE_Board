@@ -40,10 +40,10 @@ public class BoardKafkaService {
         List<Board> boardList = boardRepository.findAllByMemberId(memberId);
         for (Board board : boardList) {
             fileService.deleteFile(board.getId());
+            boardRepository.delete(board);
             kafkaTemplate.send(BOARD_DELETED_TOPIC, board.getId().toString());
         }
-        int c = boardRepository.deleteBoardsByMemberId(memberId);
-        log.info("Board {}개 삭제 완료", c);
+        log.info("Board {}개 삭제 완료", boardList.size());
     }
 
 //    @Transactional
