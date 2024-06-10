@@ -21,6 +21,7 @@ import java.util.List;
 public class BoardKafkaService {
 
     private final BoardRepository boardRepository;
+    private final FileService fileService;
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final static String MEMBER_DELETED_TOPIC = "member_deleted_topic";
     private final static String BOARD_DELETED_TOPIC = "board_deleted_topic";
@@ -37,6 +38,7 @@ public class BoardKafkaService {
 
         List<Board> boardList = boardRepository.findAllByMemberId(memberId);
         for (Board board : boardList) {
+            fileService.deleteFile(board.getId());
             kafkaTemplate.send(BOARD_DELETED_TOPIC, board.getId().toString());
         }
         int c = boardRepository.deleteBoardsByMemberId(memberId);
