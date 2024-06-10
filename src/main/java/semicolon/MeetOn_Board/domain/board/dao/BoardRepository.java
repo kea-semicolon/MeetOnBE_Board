@@ -24,6 +24,10 @@ public interface BoardRepository extends JpaRepository<Board, Long>, BoardQueryD
     @Query("delete from Board b where b.memberId = :memberId")
     int deleteBoardsByMemberId(Long memberId);
 
+    @Modifying
+    @Query("delete from Board b where b.channelId = :channelId")
+    int deleteAllByChannelId(Long channelId);
+
     List<Board> findAllByMemberId(Long memberId);
 
     List<Board> findAllByChannelId(Long channelId);

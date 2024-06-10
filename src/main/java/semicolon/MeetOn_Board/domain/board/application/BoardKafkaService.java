@@ -57,7 +57,7 @@ public class BoardKafkaService {
             fileService.deleteFile(board.getId());
             kafkaTemplate.send(BOARD_DELETED_TOPIC, board.getId().toString());
         }
-        int c = boardRepository.deleteBoardsByMemberId(channelId);
+        int c = boardRepository.deleteAllByChannelId(channelId);
         log.info("Board {}개 삭제 완료", c);
     }
 }
