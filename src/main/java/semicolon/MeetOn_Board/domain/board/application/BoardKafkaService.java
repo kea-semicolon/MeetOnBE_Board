@@ -46,18 +46,18 @@ public class BoardKafkaService {
         log.info("Board {}개 삭제 완료", c);
     }
 
-    @Transactional
-    @KafkaListener(topics = CHANNEL_DELETED_TOPIC, groupId = "channel-group")
-    public void deleteByChannelDeleted(String channelIdStr) {
-        log.info("Channel 삭제 channelId={}", channelIdStr);
-        Long channelId = Long.valueOf(channelIdStr);
-
-        List<Board> boardList = boardRepository.findAllByChannelId(channelId);
-        for (Board board : boardList) {
-            fileService.deleteFile(board.getId());
-            kafkaTemplate.send(BOARD_DELETED_TOPIC, board.getId().toString());
-        }
-        int c = boardRepository.deleteAllByChannelId(channelId);
-        log.info("Board {}개 삭제 완료", c);
-    }
+//    @Transactional
+//    @KafkaListener(topics = CHANNEL_DELETED_TOPIC, groupId = "channel-group")
+//    public void deleteByChannelDeleted(String channelIdStr) {
+//        log.info("Channel 삭제 channelId={}", channelIdStr);
+//        Long channelId = Long.valueOf(channelIdStr);
+//
+//        List<Board> boardList = boardRepository.findAllByChannelId(channelId);
+//        for (Board board : boardList) {
+//            fileService.deleteFile(board.getId());
+//            kafkaTemplate.send(BOARD_DELETED_TOPIC, board.getId().toString());
+//        }
+//        int c = boardRepository.deleteAllByChannelId(channelId);
+//        log.info("Board {}개 삭제 완료", c);
+//    }
 }
