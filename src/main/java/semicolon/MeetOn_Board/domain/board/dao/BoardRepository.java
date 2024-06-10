@@ -25,4 +25,6 @@ public interface BoardRepository extends JpaRepository<Board, Long>, BoardQueryD
     int deleteBoardsByMemberId(Long memberId);
 
     List<Board> findAllByMemberId(Long memberId);
+
+    List<Board> findAllByChannelId(Long channelId);
 }

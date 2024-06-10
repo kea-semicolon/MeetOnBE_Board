@@ -24,6 +24,7 @@ public class BoardKafkaService {
     private final FileService fileService;
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final static String MEMBER_DELETED_TOPIC = "member_deleted_topic";
+    private final static String CHANNEL_DELETED_TOPIC = "channel_deleted_topic";
     private final static String BOARD_DELETED_TOPIC = "board_deleted_topic";
 
     /**
@@ -42,6 +43,21 @@ public class BoardKafkaService {
             kafkaTemplate.send(BOARD_DELETED_TOPIC, board.getId().toString());
         }
         int c = boardRepository.deleteBoardsByMemberId(memberId);
+        log.info("Board {}개 삭제 완료", c);
+    }
+
+    @Transactional
+    @KafkaListener(topics = CHANNEL_DELETED_TOPIC, groupId = "channel-group")
+    public void deleteByChannelDeleted(String channelIdStr) {
+        log.info("Channel 삭제 channelId={}", channelIdStr);
+        Long channelId = Long.valueOf(channelIdStr);
+
+        List<Board> boardList = boardRepository.findAllByChannelId(channelId);
+        for (Board board : boardList) {
+            fileService.deleteFile(board.getId());
+            kafkaTemplate.send(BOARD_DELETED_TOPIC, board.getId().toString());
+        }
+        int c = boardRepository.deleteBoardsByMemberId(channelId);
         log.info("Board {}개 삭제 완료", c);
     }
 }
